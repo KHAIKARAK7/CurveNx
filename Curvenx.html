@@ -378,16 +378,23 @@ button:hover {
      }
 
 
-// Auto-redirect logic
+// Ambil path semasa
     const path = window.location.pathname.toLowerCase();
 
-    if (path.includes("rcdcalculator/rcd")) {
+    // Redirect logik
+    if (path.includes("TheCurveCalculator/html")) {
+      window.location.replace("https://khaikarak7.github.io/TheCurveCalculator/html/index.html");
+    } else if (path.includes("CurveNx/Curvenx")) {
+      window.location.replace("https://khaikarak7.github.io/CurveNx/Curvenx.html");
+    } else if (path.includes("BousteadorRateCalculator/security.html")) {
+      window.location.replace("https://khaikarak7.github.io/BousteadorRateCalculator/security.html");
+    } else if (path.includes("RCDCalculator/RCD")) {
       window.location.replace("https://khaikarak7.github.io/RCDCalculator/RCD.html");
-    } else if (path.includes("rctccalculator/rctc")) {
+    } else if (path.includes("RCTCcalculator/RCTC")) {
       window.location.replace("https://khaikarak7.github.io/RCTCcalculator/RCTC.html");
     } else {
-      // fallback: go to homepage or custom page
-      window.location.replace("https://khaikarak7.github.io/");
+      // fallback – redirect ke laman utama kalau tak match
+      window.location.replace("https://khaikarak7.github.io/CurveNx/Curvenx");
     }
 
     
