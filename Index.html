@@ -202,11 +202,11 @@ button:hover {
   <body>
     <!-- Top Buttons Section outside the container -->
     <div class="top-buttons">
-      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=thecurve'">The Curve</button>
-<button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=curvenx'">Curve Nx</button>
-<button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=bousteador'">Bousteador</button>
-<button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=rcd'">RCD</button>
-<button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=rctc'">RCTC</button>
+      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/TheCurveCalculator/'">The Curve</button>
+      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/CurveNx/'">Curve Nx</button>
+      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/BousteadorRateCalculator/'">Bousteador</button>
+      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/RCDCalculator/'">RCD</button>
+      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/RCTCcalculator/'">RCTC</button>
 
 
 
@@ -252,9 +252,7 @@ button:hover {
       <p class="footer">Designed for Calculate</p>
     </div>
   </body>
-  <body>
-  <p>Redirecting you... Please wait.</p>
-</body>
+  
 
   <script>
       
@@ -379,62 +377,7 @@ button:hover {
      }
 
 
-async function tryRedirect(urls) {
-      for (let url of urls) {
-        try {
-          const res = await fetch(url, { method: 'HEAD' });
-          if (res.ok) {
-            window.location.href = url;
-            return;
-          }
-        } catch (e) {
-          // ignore error and try next
-        }
-      }
 
-      // Kalau semua gagal, fallback
-      window.location.href = "https://khaikarak7.github.io/";
-    }
-
-    // Ambil parameter dari URL (e.g. ?target=thecurve)
-    const params = new URLSearchParams(window.location.search);
-    const target = params.get("target");
-
-    // Senarai cubaan URL ikut target
-    const redirectMap = {
-      "thecurve": [
-        "https://khaikarak7.github.io/TheCurveCalculator/html",
-        "https://khaikarak7.github.io/TheCurveCalculator/html.html",
-        "https://khaikarak7.github.io/TheCurveCalculator/index.html"
-      ],
-      "curvenx": [
-        "https://khaikarak7.github.io/CurveNx/Curvenx",
-        "https://khaikarak7.github.io/CurveNx/Curvenx.html",
-        "https://khaikarak7.github.io/CurveNx/index.html"
-      ],
-      "bousteador": [
-        "https://khaikarak7.github.io/BousteadorRateCalculator/security.html",
-        "https://khaikarak7.github.io/BousteadorRateCalculator/index.html"
-      ],
-      "rcd": [
-        "https://khaikarak7.github.io/RCDCalculator/RCD",
-        "https://khaikarak7.github.io/RCDCalculator/RCD.html",
-        "https://khaikarak7.github.io/RCDCalculator/index.html"
-      ],
-      "rctc": [
-        "https://khaikarak7.github.io/RCTCcalculator/RCTC",
-        "https://khaikarak7.github.io/RCTCcalculator/RCTC.html",
-        "https://khaikarak7.github.io/RCTCcalculator/index.html"
-      ]
-    };
-
-    // Jalankan redirect kalau target dikenali
-    if (redirectMap[target]) {
-      tryRedirect(redirectMap[target]);
-    } else {
-      // fallback kalau target tak dikenali
-      window.location.href = "https://khaikarak7.github.io/";
-    }
 
     
   </script>
