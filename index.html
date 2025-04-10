@@ -290,86 +290,80 @@ button:hover {
  }
  
  // Fungsi untuk mengira yuran parkir
- function calculateParkingFee() {
-   const startDate = document.getElementById("start-date").value;
-   const startTime = document.getElementById("start-time").value;
-   const endDate = document.getElementById("end-date").value;
-   const endTime = document.getElementById("end-time").value;
- 
-   if (!startDate || !startTime || !endDate || !endTime) {
-     alert("Harap isi semua tarikh dan waktu dengan betul!");
-     return;
-   }
- 
-   const startDateTime = new Date(`${startDate}T${startTime}`);
-   const endDateTime = new Date(`${endDate}T${endTime}`);
- 
-   if (endDateTime <= startDateTime) {
-     alert("Waktu tamat mesti selepas waktu mula!");
-     return;
-   }
- 
-   const durationMillis = endDateTime - startDateTime;
-   const gracePeriodMillis = 15 * 60 * 1000; // 15 minit dalam milisaat
- 
-   // Jika dalam masa Grace Period, yuran adalah percuma
-   if (durationMillis <= gracePeriodMillis) {
-     document.getElementById("total-price").textContent = "Jumlah Harga: RM0.00 (15 minit pertama percuma)";
-     return;
-   }
- 
-   let totalPrice = 0;
-   let currentDate = new Date(startDateTime);
- 
-   while (currentDate < endDateTime) {
-     const nextMidnight = new Date(
-       currentDate.getFullYear(),
-       currentDate.getMonth(),
-       currentDate.getDate() + 1,
-       0,
-       0,
-       0
-     );
-     const segmentEndTime = nextMidnight > endDateTime ? endDateTime : nextMidnight;
-     const segmentHours = Math.ceil((segmentEndTime - currentDate) / (1000 * 60 * 60));
- 
-     const currentDay = currentDate.toLocaleString("en-US", { weekday: "long" }).toUpperCase();
- 
-     if (["SATURDAY", "SUNDAY"].includes(currentDay)) {
-       totalPrice += 6.6; // RM3 untuk maksimum sehari
-     } else {
-       const segmentPrice = calculateWeekdayRate(segmentHours);
-       totalPrice += Math.min(segmentPrice, 6.6); // Maksimum RM32 sehari
-     }
- 
-     currentDate = nextMidnight;
-   }
- 
-   document.getElementById("total-price").textContent = `Jumlah Harga: RM${totalPrice.toFixed(2)}`;
- }
- 
- function calculateWeekdayRate(hours) {
+function calculateParkingFee() {
+  const startDate = document.getElementById("start-date").value;
+  const startTime = document.getElementById("start-time").value;
+  const endDate = document.getElementById("end-date").value;
+  const endTime = document.getElementById("end-time").value;
+
+  if (!startDate || !startTime || !endDate || !endTime) {
+    alert("Harap isi semua tarikh dan waktu dengan betul!");
+    return;
+  }
+
+  const startDateTime = new Date(`${startDate}T${startTime}`);
+  const endDateTime = new Date(`${endDate}T${endTime}`);
+
+  if (endDateTime <= startDateTime) {
+    alert("Waktu tamat mesti selepas waktu mula!");
+    return;
+  }
+
+  const durationMillis = endDateTime - startDateTime;
+  const gracePeriodMillis = 15 * 60 * 1000; // 15 minit
+
+  // Jika dalam masa Grace Period, yuran adalah percuma
+  if (durationMillis <= gracePeriodMillis) {
+    document.getElementById("total-price").textContent = "Jumlah Harga: RM0.00 (15 minit pertama percuma)";
+    return;
+  }
+
+  let totalPrice = 0;
+  let currentDate = new Date(startDateTime);
+
+  while (currentDate < endDateTime) {
+    const nextMidnight = new Date(currentDate);
+    nextMidnight.setHours(24, 0, 0, 0);
+
+    const segmentEndTime = nextMidnight > endDateTime ? endDateTime : nextMidnight;
+    const segmentHours = Math.ceil((segmentEndTime - currentDate) / (1000 * 60 * 60));
+
+    const currentDay = currentDate.toLocaleString("en-US", { weekday: "long" }).toUpperCase();
+
+    if (["SATURDAY", "SUNDAY"].includes(currentDay) || isPublicHoliday(currentDate)) {
+      totalPrice += 6.6; // RM6.60 untuk hujung minggu & cuti umum
+    } else {
+      const segmentPrice = calculateWeekdayRate(segmentHours);
+      totalPrice += Math.min(segmentPrice, 7.7); // Maksimum RM7.70 untuk hari bekerja
+    }
+
+    currentDate = nextMidnight;
+  }
+
+  document.getElementById("total-price").textContent = `Jumlah Harga: RM${totalPrice.toFixed(2)}`;
+}
+
+// Kiraan untuk hari bekerja (Isnin - Jumaat)
+function calculateWeekdayRate(hours) {
   let price = 0;
 
-  // Apply RM2.20 untuk 2 jam pertama
   if (hours > 0) {
-    if (hours >= 2) {
-      price += 2.2; // RM2.2 untuk 2 jam pertama
-      if (hours > 2) {
-        price += (hours - 2) * 1.1; // RM1.10 untuk setiap jam selepas 2 jam pertama
-      }
+    if (hours <= 2) {
+      price = 2.2; // RM2.20 untuk hingga 2 jam
     } else {
-      price += 2.2; // Untuk kurang dari 2 jam tetap RM2.2
+      price = 2.2 + (hours - 2) * 1.1; // RM1.10 untuk setiap jam selepas 2 jam
     }
   }
 
-  // Pastikan harga maksimum tidak melebihi RM9.90 untuk 24 jam
-  if (price > 7.7) {
-    price = 7.7;
-  }
-
-  return price;
+  return Math.min(price, 7.7); // Had maksimum RM7.70
 }
+
+// Dummy function untuk cuti umum
+function isPublicHoliday(date) {
+  // Tambah senarai cuti umum sebenar di sini jika mahu
+  return false;
+}
+
  
  function redirectAndClose(url) {
        window.open(url, '_self'); // Navigate in same tab
