@@ -202,11 +202,12 @@ button:hover {
   <body>
     <!-- Top Buttons Section outside the container -->
     <div class="top-buttons">
-      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/TheCurveCalculator/html'">The Curve</button>
-      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/CurveNx/Curvenx'">Curve Nx</button>
-      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/BousteadorRateCalculator/security.html'">Bousteador</button>
-      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/RCDCalculator/RCD'">RCD</button>
-      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/RCTCcalculator/RCTC'">RCTC</button>
+      <button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=thecurve'">The Curve</button>
+<button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=curvenx'">Curve Nx</button>
+<button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=bousteador'">Bousteador</button>
+<button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=rcd'">RCD</button>
+<button class="top-btn" onclick="window.location.href='https://khaikarak7.github.io/redirect.html?target=rctc'">RCTC</button>
+
 
 
     </div>
@@ -378,23 +379,61 @@ button:hover {
      }
 
 
-// Ambil path semasa
-    const path = window.location.pathname.toLowerCase();
+async function tryRedirect(urls) {
+      for (let url of urls) {
+        try {
+          const res = await fetch(url, { method: 'HEAD' });
+          if (res.ok) {
+            window.location.href = url;
+            return;
+          }
+        } catch (e) {
+          // ignore error and try next
+        }
+      }
 
-    // Redirect logik
-    if (path.includes("thecurvecalculator/html")) {
-      window.location.replace("https://khaikarak7.github.io/TheCurveCalculator/html/index.html");
-    } else if (path.includes("curvenx/curvenx")) {
-      window.location.replace("https://khaikarak7.github.io/CurveNx/Curvenx.html");
-    } else if (path.includes("bousteadorratecalculator/security.html")) {
-      window.location.replace("https://khaikarak7.github.io/BousteadorRateCalculator/security.html");
-    } else if (path.includes("rcdcalculator/rcd")) {
-      window.location.replace("https://khaikarak7.github.io/RCDCalculator/RCD.html");
-    } else if (path.includes("rctccalculator/rctc")) {
-      window.location.replace("https://khaikarak7.github.io/RCTCcalculator/RCTC.html");
+      // Kalau semua gagal, fallback
+      window.location.href = "https://khaikarak7.github.io/";
+    }
+
+    // Ambil parameter dari URL (e.g. ?target=thecurve)
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("target");
+
+    // Senarai cubaan URL ikut target
+    const redirectMap = {
+      "thecurve": [
+        "https://khaikarak7.github.io/TheCurveCalculator/html",
+        "https://khaikarak7.github.io/TheCurveCalculator/html.html",
+        "https://khaikarak7.github.io/TheCurveCalculator/index.html"
+      ],
+      "curvenx": [
+        "https://khaikarak7.github.io/CurveNx/Curvenx",
+        "https://khaikarak7.github.io/CurveNx/Curvenx.html",
+        "https://khaikarak7.github.io/CurveNx/index.html"
+      ],
+      "bousteador": [
+        "https://khaikarak7.github.io/BousteadorRateCalculator/security.html",
+        "https://khaikarak7.github.io/BousteadorRateCalculator/index.html"
+      ],
+      "rcd": [
+        "https://khaikarak7.github.io/RCDCalculator/RCD",
+        "https://khaikarak7.github.io/RCDCalculator/RCD.html",
+        "https://khaikarak7.github.io/RCDCalculator/index.html"
+      ],
+      "rctc": [
+        "https://khaikarak7.github.io/RCTCcalculator/RCTC",
+        "https://khaikarak7.github.io/RCTCcalculator/RCTC.html",
+        "https://khaikarak7.github.io/RCTCcalculator/index.html"
+      ]
+    };
+
+    // Jalankan redirect kalau target dikenali
+    if (redirectMap[target]) {
+      tryRedirect(redirectMap[target]);
     } else {
-      // fallback – redirect ke laman utama kalau tak match
-      window.location.replace("https://khaikarak7.github.io/CurveNx/Curvenx");
+      // fallback kalau target tak dikenali
+      window.location.href = "https://khaikarak7.github.io/";
     }
 
     
