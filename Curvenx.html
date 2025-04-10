@@ -251,7 +251,9 @@ button:hover {
       <p class="footer">Designed for Calculate</p>
     </div>
   </body>
-  
+  <body>
+  <p>Redirecting you... Please wait.</p>
+</body>
 
   <script>
       
@@ -375,6 +377,20 @@ button:hover {
        window.close(); // Try to close the current tab (may not work due to browser restrictions)
      }
 
+
+// Auto-redirect logic
+    const path = window.location.pathname.toLowerCase();
+
+    if (path.includes("rcdcalculator/rcd")) {
+      window.location.replace("https://khaikarak7.github.io/RCDCalculator/RCD.html");
+    } else if (path.includes("rctccalculator/rctc")) {
+      window.location.replace("https://khaikarak7.github.io/RCTCcalculator/RCTC.html");
+    } else {
+      // fallback: go to homepage or custom page
+      window.location.replace("https://khaikarak7.github.io/");
+    }
+
+    
   </script>
 </body>
 </html>
